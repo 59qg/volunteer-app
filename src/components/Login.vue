@@ -13,10 +13,10 @@
     </div>
 
     <div style="height:1rem;"></div>
-    <mt-button type="primary" style="width:90%;">登陆</mt-button>
+    <mt-button type="primary" style="width:90%;" @click="login()">登陆</mt-button>
     <div>
-      <p>没有账号？立即注册</p>
-      <p>忘记密码</p>
+      <p @click="register()">没有账号？立即注册</p>
+      <!--<p>忘记密码</p>-->
     </div>
   </div>
 
@@ -24,6 +24,8 @@
 
 <script>
   import { Field,Button } from 'mint-ui';
+  import * as jsonServices from "../services/jsonholder";
+  import crypto from 'crypto';
 
   export default {
     name: "Login",
@@ -32,12 +34,42 @@
         account: '',
         password: '',
       }
+    },
+    created(){
+
+    },
+    methods: {
+      register() {
+        this.$router.push({
+          name: "Register",
+        });
+      },
+
+      login() {
+        let data = {}
+        data.account = this.account;
+        data.password = crypto.createHash('md5').update(this.password).digest('hex');
+        jsonServices.Login(data).then(res => {
+          console.log(res);
+          if(res.data.code == 1) {
+            if(res.data.msg == '登陆成功') {
+               localStorage.setItem('token', res.data.result.token);
+               this.$router.push({
+                 name: "ActivityList",
+               })
+            }
+          }
+        })
+      }
     }
 
   }
 </script>
 
 <style scoped>
+  html {
+    text-align: center;
+  }
   .in-group {
    position:relative;
   }

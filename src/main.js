@@ -6,6 +6,8 @@ import 'mint-ui/lib/style.css'
 import App from './App'
 import router from './router'
 import 'font-awesome/css/font-awesome.min.css'
+import './css/common.css'
+import crypto from 'crypto'
 
 Vue.config.productionTip = false
 Vue.use(Mint);

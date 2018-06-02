@@ -28,11 +28,34 @@ export default function request(url, options) {
             'content-type': 'application/x-www-form-urlencoded',
         };
     }
-    return axios('http://localhost:3001/appapi' + url, {...options, headers, withCredentials: true })
+  //  return axios('http://localhost:3020/volunteer/appapi' + url, {...options, headers, withCredentials: true })
+  if(options.method == 'POST' || options.method == 'PUT') {
+    return axios({
+      method: options.method,
+      url: 'http://localhost:3020/volunteer/appapi' + url,
+      data: options.params,
+      withCredentials: true
+    })
     .then((res) => {
-        NProgress.done();
-        return res
+      NProgress.done();
+      return res
     })
     .then(checkStatus)
     .catch(err => ({ err }));
+  }
+  else {
+    return axios({
+      method: options.method,
+      url: 'http://localhost:3020/volunteer/appapi' + url,
+      params: options.params,
+      withCredentials: true
+    })
+    .then((res) => {
+      NProgress.done();
+      return res
+    })
+    .then(checkStatus)
+    .catch(err => ({ err }));
+  }
+
 }
