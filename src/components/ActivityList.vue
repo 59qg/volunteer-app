@@ -205,6 +205,11 @@
             name: "MyActivity",
           })
         }
+        if(newVal === '4') {
+          this.$router.push({
+            name: "MyInfo",
+          })
+        }
       },
       selectCounty: function(newVal, oldVal) {
         this.getActivityList();
@@ -223,25 +228,7 @@
         data.title = this.searchKey;
         jsonServices.ActivityList(data).then(res => {
           if(res.data.code === 1) {
-            if(res.data.result.total > 0) {
-              var flag = 0;
-              for(let a in res.data.result.data) {
-                res.data.result.data[a].recruited = 0;
-                jsonServices.ActivityEnroll({activity_id: res.data.result.data[a].id}).then(rest => {
-                  if(rest.data.code === 1) {
-                    res.data.result.data[a].enrollNum = rest.data.result.length;
-                    res.data.result.data[a].enroll = rest.data.result;
-                    if(res.data.result.status === 1){
-                      res.data.result.data[a].recruited ++;
-                    }
-                    flag = flag+1;
-                    if(flag === res.data.result.total){
-                      this.activityList = res.data.result.data;
-                    }
-                  }
-                })
-              }
-            }
+            this.activityList = res.data.result.data;
           }
         })
       },
@@ -255,6 +242,12 @@
       renderState(n) {
         if(n === 2) {
           return '招募中';
+        }
+        if(n === 3) {
+          return '开展中';
+        }
+        if(n === 4) {
+          return '已经结束';
         }
       },
       transDate(date) {

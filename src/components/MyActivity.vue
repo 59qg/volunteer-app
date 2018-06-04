@@ -5,13 +5,40 @@
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="3">
         <div class="topBar">
-          <mt-navbar v-model="typed" style="display: flex;width:100%;height:55px">
-            <mt-tab-item id="5" style="width:50%;"><span style="font-size:1.2rem">我的报名</span></mt-tab-item>
-            <mt-tab-item id="6" style="width:50%;"><span style="font-size:1.2rem">我的收藏</span></mt-tab-item>
-          </mt-navbar>
+          <div style="display: flex;width:100%;height:55px">
+            <div id="5" style="width:50%;line-height:55px;" :style="a" @click="transtyped()"><span style="font-size:1.2rem">我的收藏</span></div>
+            <div id="6" style="width:50%;line-height:55px;" :style="b" @click="transtyped()"><span style="font-size:1.2rem">我的报名</span></div>
+          </div>
         </div>
-        <mt-tab-container v-model="typed">
-          <mt-tab-container-item id="6">
+        <div>
+          <mt-tab-container-item v-show="typed">
+            <div class="content">
+              <ul style="background-color:#FFFFFF;display: flex;flex-flow: column nowrap;">
+                <li v-for="item in collectList" :key="item.id" style="" @click="getDetail(item)">
+                  <div class="li1">
+                    <div class="imgContent">
+                      <img :src="item.img">
+                    </div>
+                    <div class="info">
+                      <p style="margin-bottom:.5rem;" class="title ellipsis">
+                        {{item.title}}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="li2">
+                    <p>
+                      <span style="color:#bfbfbf">活动时间：</span>
+                      <span class="time">{{transDate(item.time)}}</span>
+                    </p>
+                    <p>
+                      <span class="state" style="color:#0f559a">{{renderState(item.status)}}</span>
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </mt-tab-container-item>
+          <mt-tab-container-item v-show="!typed">
             <div class="content">
               <ul style="background-color:#FFFFFF;display: flex;flex-flow: column nowrap;">
                 <li v-for="item in enrollList" :key="item.id" style="" @click="getDetail(item)">
@@ -20,7 +47,7 @@
                       <img :src="item.img">
                     </div>
                     <div class="info">
-                      <p style="margin-bottom:.5rem;" id="title" class="ellipsis">
+                      <p style="margin-bottom:.5rem;"  class="title ellipsis">
                         {{item.title}}
                       </p>
                     </div>
@@ -28,17 +55,17 @@
                   <div class="li2">
                     <p>
                       <span style="color:#bfbfbf">活动时间：</span>
-                      <span id="time">{{transDate(item.time)}}</span>
+                      <span class="time">{{transDate(item.time)}}</span>
                     </p>
                     <p>
-                      <span id="state" style="color:#0f559a">{{renderState(item.status)}}</span>
+                      <span class="state" style="color:#0f559a">{{renderState(item.status)}}</span>
                     </p>
                   </div>
                 </li>
               </ul>
             </div>
           </mt-tab-container-item>
-        </mt-tab-container>
+        </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
 
@@ -77,7 +104,7 @@
 </template>
 
 <script>
-  import {Navbar, TabItem} from 'mint-ui'
+  import {Navbar, TabItem, MessageBox} from 'mint-ui'
   import * as jsonServices from "../services/jsonholder";
   import moment from 'moment'
 
@@ -86,13 +113,20 @@
     data(){
       return {
         selected: '3',
-        typed: '6',
+        typed: true,
         token: localStorage.getItem('token'),
         enrollList: [],
         collectList: [],
+        a: {
+          'border-bottom':'1px solid #26a2ff'
+        },
+        b: {
+          'border-bottom':'1px solid #ffffff'
+        }
       }
     },
     created(){
+      this.getCollectList();
       this.getEnrollList();
     },
     watch:{
@@ -112,10 +146,36 @@
             name: "MyActivity",
           })
         }
+        if(newVal === '4') {
+          this.$router.push({
+            name: "MyInfo",
+          })
+        }
       },
+
 
     },
     methods: {
+      transtyped: function() {
+        if(this.typed === true) {
+          this.typed = false;
+          this.a = {
+            'border-bottom':'1px solid #ffffff'
+          }
+          this.b = {
+            'border-bottom':'1px solid #26a2ff'
+          }
+        }
+        else if(this.typed === false) {
+          this.typed = true;
+          this.b = {
+            'border-bottom':'1px solid #ffffff'
+          }
+          this.a = {
+            'border-bottom':'1px solid #26a2ff'
+          }
+        }
+      },
       getEnrollList: function() {
         var data = {};
         data.token = this.token;
@@ -137,6 +197,27 @@
           }
         })
       },
+      getCollectList: function() {
+        var data = {};
+        data.token = this.token;
+        jsonServices.UserCollect(data).then(res => {
+          if(res.data.code === 1) {
+            if(res.data.result.length > 0) {
+              var list1 = [];
+              for(let a in res.data.result) {
+                jsonServices.ActivityDetail({id: res.data.result[a].activity_id}).then(rest => {
+                  if(rest.data.code === 1) {
+                    list1.push(rest.data.result);
+                    if(list1.length === res.data.result.length){
+                      this.collectList = list1;
+                    }
+                  }
+                })
+              }
+            }
+          }
+        })
+      },
       getDetail: function(item) {
         this.$router.push({
           name: "MyActivityDetail",
@@ -147,6 +228,12 @@
       renderState(n) {
         if(n === 2) {
           return '招募中';
+        }
+        if(n === 3) {
+          return '开展中';
+        }
+        if(n === 4) {
+          return '已经结束';
         }
       },
       transDate(date) {
@@ -177,6 +264,7 @@
     justify-content: space-around ;
     align-items: center;
     height:60px;
+    text-align: center;
   }
   .content {
     margin-top:60px;
@@ -211,7 +299,7 @@
     /*border-top:5px solid #f8f8f8;*/
     margin-top:.5rem;
   }
-  #title {
+  .title {
     font-size:1.3rem;
   }
   .mint-tab-item-label {

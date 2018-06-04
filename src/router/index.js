@@ -8,6 +8,10 @@ import ActivityDetail from '@/components/ActivityDetail'
 import NewsDetail from '@/components/NewsDetail'
 import MyActivity from '@/components/MyActivity'
 import MyActivityDetail from '@/components/MyActivityDetail'
+import AddComment from '@/components/AddComment'
+import MyAddComment from '@/components/MyAddComment'
+import MyInfo from '@/components/MyInfo'
+import ModifyPsd from '@/components/ModifyPsd'
 
 Vue.use(Router)
 
@@ -57,6 +61,26 @@ export default new Router({
       path: '/my-activity-detail',
       name: 'MyActivityDetail',
       component: MyActivityDetail
+    },
+    {
+      path: '/add-comment',
+      name: 'AddComment',
+      component: AddComment
+    },
+    {
+      path: '/my-add-comment',
+      name: 'MyAddComment',
+      component: MyAddComment
+    },
+    {
+      path: '/my-info',
+      name: 'MyInfo',
+      component: MyInfo
+    },
+    {
+      path: '/modify-psd',
+      name: 'ModifyPsd',
+      component: ModifyPsd
     }
 
   ]

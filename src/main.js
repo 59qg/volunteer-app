@@ -8,6 +8,7 @@ import router from './router'
 import 'font-awesome/css/font-awesome.min.css'
 import './css/common.css'
 import crypto from 'crypto'
+import "./js/jquery"
 
 Vue.config.productionTip = false
 Vue.use(Mint);

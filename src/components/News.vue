@@ -4,6 +4,11 @@
       <mt-tab-container-item id="1">
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
+        <div class="topBar">
+          <div style="width:100%;height:60px">
+            <div style="width:100%;line-height:60px;text-align: center"><span style="font-size:1.2rem">志愿新闻</span></div>
+          </div>
+        </div>
         <div class="content">
           <ul style="background-color:#FFFFFF;display: flex;flex-flow: column nowrap;">
             <li v-for="item in newsList" :key="item.id" style="" @click="getDetail(item)">
@@ -90,6 +95,11 @@
             name: "MyActivity",
           })
         }
+        if(newVal === '4') {
+          this.$router.push({
+            name: "MyInfo",
+          })
+        }
       }
     },
     methods: {
@@ -135,10 +145,12 @@
     left:0;
     width:100%;
     display: flex;
-    flex-flow: row;
-    justify-content: space-around ;
+    flex-flow: column;
     align-items: center;
-    height:50px;
+    height:60px;
+  }
+  .content {
+    margin-top:60px;
   }
   .content li {
     padding:.8rem;

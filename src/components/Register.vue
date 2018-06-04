@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <div>
-      <p style="font-size:1.5rem;color:#26a2ff">新用户注册</p>
+      <p class="top">新用户注册</p>
     </div>
     <mt-field  label="用户名" placeholder="请设置用户名" type="text" ref="username" v-model.lazy="username" @change="nameCheck()"></mt-field>
     <mt-field  label="密码" placeholder="密码" type="password" ref="password1" v-model.lazy="password1" @change="passwordCheck1()"></mt-field>
@@ -14,14 +14,18 @@
     <!--<mt-field  label="地址" placeholder="请输入地址" type="text" v-model="address" ></mt-field>-->
     <!--<mt-field  label="简介" placeholder="简单介绍下自己" type="textarea" rows="4" v-model="desc"></mt-field>-->
 
-    <div style="height:1rem;"></div>
+    <div style="height:2rem;"></div>
     <mt-button type="primary" style="width:90%;" @click="register()">注册</mt-button>
+    <div style="margin-top:1rem;">
+      <p @click="login()">返回登陆</p>
+    </div>
   </div>
 </template>
 
 <script>
   import * as jsonServices from "../services/jsonholder";
   import { Toast, Radio } from 'mint-ui';
+  import { MessageBox } from 'mint-ui';
   import crypto from 'crypto';
 
   export default {
@@ -140,14 +144,29 @@
         else {
           this.$refs.password2.state = 'success';
         }
-      }
+      },
+
+      login() {
+        this.$router.push({
+          name: "Login",
+        });
+      },
     }
 
   }
 </script>
 
 <style scoped>
-  html {
+  *{
     text-align: center;
+  }
+  .register {
+    margin-top:2rem;
+    padding: 0 1rem;
+  }
+  .top {
+    font-size:1.5rem;
+    color:#26a2ff;
+    margin:2rem;
   }
 </style>

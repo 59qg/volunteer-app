@@ -96,16 +96,37 @@ export async function RegisterCheck(params) {
 }
 
 export async function GetUserInfo(params) {
-  return await request(`/user/info`, {
+  return await request(`/user/`, {
     method: 'GET',
     params: params,
   })
 }
 
 export async function SaveUserInfo(params) {
-  return await request(`/user/info`, {
+  return await request(`/user/`, {
     method: 'PUT',
     params: params,
   })
 }
 
+
+export async function GetActivityComment(params) {
+  return await request(`/activity/comment`, {
+    method: 'GET',
+    params: params,
+  })
+}
+
+export async function UserComment(params) {
+  return await request(`/user/comment`, {
+    method: 'POST',
+    params: params,
+  })
+}
+
+export async function ModifyPsd(params) {
+  return await request(`/user/psd`, {
+    method: 'PUT',
+    params: params,
+  })
+}

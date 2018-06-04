@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div>
-      <p style="font-size:1.5rem;color:#26a2ff">登陆</p>
+      <p class="top">登陆</p>
     </div>
     <div class="in-group">
       <i class="fa fa-user"></i>
@@ -12,9 +12,9 @@
       <mt-field  label="密码" placeholder="请输入密码" type="password" v-model="password" style="border-bottom: 1px solid #9b9b9b;"></mt-field>
     </div>
 
-    <div style="height:1rem;"></div>
+    <div style="height:2rem;"></div>
     <mt-button type="primary" style="width:90%;" @click="login()">登陆</mt-button>
-    <div>
+    <div style="margin-top:1rem;">
       <p @click="register()">没有账号？立即注册</p>
       <!--<p>忘记密码</p>-->
     </div>
@@ -67,8 +67,17 @@
 </script>
 
 <style scoped>
-  html {
+  *{
     text-align: center;
+  }
+  .login {
+    margin-top:2rem;
+    padding: 0 1rem;
+  }
+  .top {
+    font-size:1.5rem;
+    color:#26a2ff;
+    margin:2rem;
   }
   .in-group {
    position:relative;
@@ -78,5 +87,6 @@
     left:10px;
     top:10px;
   }
+
 
 </style>
